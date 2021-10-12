@@ -9,13 +9,6 @@
 
 #define BUF_SIZE 10
 
-/*
- * TO-DO
- * Figure it out how to calculate the time with gettimeofday between 2 processes
- * and where to put the funcion, also check how to make the child and the parent
- * run on the same cpu (check for sched_setaffinity()
- */
-
 int main(int argc, char **argv) {
     if(argc != 2) {
         printf("usage: %s <string>\n", argv[0]);
@@ -71,7 +64,7 @@ int main(int argc, char **argv) {
         gettimeofday(time, NULL);
         secs = time->tv_sec;
         usecs = time->tv_usec;
-        printf("\nChild time: %ld,%.6ld\n", secs, usecs);
+        printf("\nChild time: %ld,%.6ld seconds.\n", secs, usecs);
         free(time);
 
         if(close(filedes[0]) == -1) {
@@ -100,7 +93,7 @@ int main(int argc, char **argv) {
         gettimeofday(time, NULL);
         secs = time->tv_sec;
         usecs = time->tv_usec;
-        printf("\nParent time: %ld,%.6ld\n", secs, usecs);
+        printf("\nParent time: %ld,%.6ld seconds.\n", secs, usecs);
         free(time);
         break;
     }
