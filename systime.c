@@ -5,24 +5,28 @@
 
 int main(void) {
     int rc = 0;
-    struct timeval beginTime, endTime;
+    struct timeval *beginTime = malloc(sizeof(struct timeval));
+    struct timeval *endTime = malloc(sizeof(struct timeval));
     long int secs = 0, usecs = 0;
 
-    gettimeofday(&beginTime, NULL);
+    gettimeofday(beginTime, NULL);
     rc = read(STDIN_FILENO, NULL, 0);
-    gettimeofday(&endTime, NULL);
+    gettimeofday(endTime, NULL);
     if(rc == -1) {
         fprintf(stderr, "Error un read syscall.\n");
         exit(1);
     }
 
-    secs = endTime.tv_sec - beginTime.tv_sec;
-    if(endTime.tv_usec >= beginTime.tv_usec) {
-        usecs = endTime.tv_usec - beginTime.tv_usec;
+    secs = endTime->tv_sec - beginTime->tv_sec;
+    if(endTime->tv_usec >= beginTime->tv_usec) {
+        usecs = endTime->tv_usec - beginTime->tv_usec;
     } else {
-        usecs = beginTime.tv_usec - endTime.tv_usec;
+        usecs = beginTime->tv_usec - endTime->tv_usec;
     }
     
     printf("\nTime of syscall: %ld,%.6ld seconds.\n\n", secs, usecs);
+
+    free(beginTime);
+    free(endTime);
     return 0;
 }
